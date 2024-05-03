@@ -2,7 +2,7 @@
 
 Canvas Team Number: 6
 
-Team Member Names: Corbin, Luke, Avery, Sawyer, Jehyeon
+Team Member Names: Luke Warner, Avery Anderson, Gabe Hayes, Sawyer Burton, Jehyeon Kweon, Corbin Andrus
 
 ## Part 1 - Initial Planning
 
