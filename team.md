@@ -14,29 +14,29 @@ During this semester, your team will work together to create an application to h
 
 1. Provide a high level description of the software you plan to create: 
 
-    >> We plan to create a note app that will allow users to take notes from their classes, and then use AI to summarize the results and prompt users to review their notes at a later time.
+    > We plan to create a note app that will allow users to take notes from their classes, and then use AI to summarize the results and prompt users to review their notes at a later time.
 
 2. Describe the purpose of the Software:
 
-    >> The purpose of the software is to help student users take notes, utilize AI to summarize their notes, and review their notes at a later date.
+    > The purpose of the software is to help student users take notes, utilize AI to summarize their notes, and review their notes at a later date.
 
 3. Identify the programming languages, frameworks, and libraries you will most likely need to learn and use:
 
-    >> We will want to build a simple desktop app using the python language. The libraries involved in that would be tkinter and the ChatGPT libraries. We will also need to setup a GitHub repo. 
+    > We will want to build a simple desktop app using the python language. The libraries involved in that would be tkinter and the ChatGPT libraries. We will also need to setup a GitHub repo. 
 
 ### Section 1.2 Communication
 
 1. What tool will use for team assignments (e.g. Trello, MS Planner, Asana)? 
 
-    >> We will use a Trello board to create tasks and assignments.
+    > We will use a Trello board to create tasks and assignments.
 
 2. What tool will use for team communication (e.g. MS Teams, Slack, Discord)? 
 
-    >> We will use our MS Teams channel to communicate.
+    > We will use our MS Teams channel to communicate.
 
 3. Is every team members connected with the tools that you selected?
 
-    >> We are all added to the MS Teams channel, and we will create the GitHub repo and Trello board on Wednesday. 
+    > We are all added to the MS Teams channel, and we will create the GitHub repo and Trello board on Wednesday. 
 
 ### Section 1.3 Team Roles
 
@@ -49,7 +49,7 @@ Every team member is a software developer on the project.  Each team member is a
 |Ensuring GitHub is Working      | Luke               |
 |Maintaining Documentation       | Jehyeon            |
 |Create & Display Presentations  | Corbin             |
-|Submit Team Assignments         | Corbin             |
+|Submit Team Assignments         | Gabe               |
 
 ### Section 1.4 - General Schedule
 
@@ -68,7 +68,7 @@ Each Sprint you will present at the Team Review Meeting for 5 minutes.  You will
 
 1. Does every team member understand the time requirements for the project? 
 
-    >> Yes
+    > Yes
 
 ### Section 1.5 - Grading
 
@@ -85,7 +85,7 @@ Each team member will report their individual participation each Sprint using a 
 
 1. Does every team member understand the grading rubric for the project?
 
-    >> Yes
+    > Yes
 
 ## Part 2 - Final Planning
 
