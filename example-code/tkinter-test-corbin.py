@@ -1,4 +1,5 @@
 # i created this file to experiment and familiarize myself with tkinter, as well as get it working with a firestore db.
+# you will need to run pip install firebase-admin to import firebase, and have the path to the key
 
 import tkinter as tk
 from tkinter import messagebox
