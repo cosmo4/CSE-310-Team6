@@ -93,23 +93,33 @@ This section should be filled out during the second Sprint and submitted by one 
 
 ### Section 2.1 - Project Scope
 
-1. Software Title:
+1. Software Title: 
 
-2. Software Description:
+    > Note Manager
+
+2. Software Description: 
+
+    > This software will allow users to log in to an account, then take notes on a GUI and set reminders to review notes and    utilize AI to summarize those notes.
 
 3. Make a list of features that you plan to include in your software by the end of Week 13.  List your features in terms of priority (highest priority items listed first):
 
 |Feature #|Description                                               |
 |---------|----------------------------------------------------------|
-|         |                                                          |
-|         |                                                          |
-|         |                                                          |
-|         |                                                          |
+|    1    | User can write and save notes.                           |
+|    2    | Working GUI.                                             |
+|    3    | AI summarizes notes that are taken.                      |
+|    4    | Firebase/firestore database captures notes.              |
+|    5    | Users can create an account and login.                   |
+|    6    | A reminder is sent to the user for them to review notes. |
+|    7    | Translate writing to ASCII.                              |
+|    8    | Program can listen to lectures and translate to notes.   |
 
 _Note: Add more rows as needed._
 
 
-4. Identify the programming languages, frameworks, and libraries you will be using:
+4. Identify the programming languages, frameworks, and libraries you will be using: 
+
+    > Python, tkinter, firebase, OpenAI
 
 ### Section 2.2 - Updated Team Roles
 
@@ -117,12 +127,12 @@ You can change the roles of team members if desired.  Provide the updated list o
 
 |Responsiblity                   |Team Member         |
 |--------------------------------|--------------------|
-|Conducting Meetings             |                    |
-|Maintaining Team Assignment List|                    |
-|Ensuring GitHub is Working      |                    |
-|Maintaining Documentation       |                    |
-|Create & Display Presentations  |                    |
-|Submit Team Assignments         |                    |
+|Conducting Meetings             | Sawyer             |
+|Maintaining Team Assignment List| Avery              |
+|Ensuring GitHub is Working      | Luke               |
+|Maintaining Documentation       | Jehyeon            |
+|Create & Display Presentations  | Corbin             |
+|Submit Team Assignments         | Gabe               |
 
 ## Part 3 - Results
 
