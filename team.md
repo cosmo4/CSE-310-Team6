@@ -99,7 +99,7 @@ This section should be filled out during the second Sprint and submitted by one 
 
 2. Software Description: 
 
-    > This software will allow users to log in to an account, then take notes on a GUI and set reminders to review notes and    utilize AI to summarize those notes.
+    > This software will allow users to log in to an account, then take notes on a GUI and set reminders to review notes and utilize AI to summarize those notes.
 
 3. Make a list of features that you plan to include in your software by the end of Week 13.  List your features in terms of priority (highest priority items listed first):
 
