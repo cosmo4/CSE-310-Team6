@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+from aiFileTest import summarize
 
 class LoginWindow:
     """
@@ -19,16 +20,16 @@ class LoginWindow:
         self.frame.pack(pady=20)
 
         # Add a label with instructions
-        title_label = tk.Label(self.frame, text=('Please log in with a valid email and password.\n'
-                                                 '\nIf you have never logged in, enter a valid email and password '
+        title_label = tk.Label(self.frame, text=('Please log in with your username and password.\n'
+                                                 '\nIf you have never logged in, enter a username and password '
                                                  'and click "Create Account".'), wraplength=350, justify="left")
         title_label.pack(pady=10)
 
         # Username field
-        self.email_label = tk.Label(self.frame, text="Email")
-        self.email_label.pack(pady=5)
-        self.email_entry = tk.Entry(self.frame)
-        self.email_entry.pack(pady=5)
+        self.username_label = tk.Label(self.frame, text="Username")
+        self.username_label.pack(pady=5)
+        self.username_entry = tk.Entry(self.frame)
+        self.username_entry.pack(pady=5)
 
         # Password field
         self.password_label = tk.Label(self.frame, text="Password")
@@ -52,23 +53,23 @@ class LoginWindow:
         """
         Handle user account creation.
         """
-        email = self.email_entry.get()
+        username = self.username_entry.get()
         password = self.password_entry.get()
-        if email and password:
+        if username and password:
             messagebox.showinfo("Account Created", "Account created successfully. You can now sign in.")
         else:
-            messagebox.showwarning("Input Error", "Please enter both a valid email and password")
+            messagebox.showwarning("Input Error", "Please enter both username and password")
 
     def sign_in(self):
         """
         Handle user sign-in.
         """
-        email = self.email_entry.get()
+        username = self.username_entry.get()
         password = self.password_entry.get()
-        if email and password:
+        if username and password:
             self.app.open_main_window()
         else:
-            messagebox.showwarning("Input Error", "Please enter valid email and password")
+            messagebox.showwarning("Input Error", "Please enter both username and password")
 
 class MainWindow:
     """
@@ -95,7 +96,7 @@ class MainWindow:
         self.new_note_button.pack(pady=10)
 
         # Summarize button
-        self.summarize_button = tk.Button(self.button_frame, text="Summarize", width=20, height=2)
+        self.summarize_button = tk.Button(self.button_frame, text="Summarize", command=summarize, width=20, height=2)
         self.summarize_button.pack(pady=10)
 
         # Draw button
