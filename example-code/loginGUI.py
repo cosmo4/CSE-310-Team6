@@ -71,6 +71,22 @@ class LoginWindow:
         else:
             messagebox.showwarning("Input Error", "Please enter both username and password")
 
+class DrawWindow:
+    """
+    Class to handle the draw window functionality.
+    """
+    def __init__(self, root):
+        """
+        Initialize the draw window.
+        """
+        self.root = root
+        self.root.title("Draw")
+        self.root.geometry("400x400")
+
+        # Create the canvas for drawing
+        self.canvas = tk.Canvas(self.root, bg="white", width=400, height=400)
+        self.canvas.pack(fill=tk.BOTH, expand=True)
+
 class MainWindow:
     """
     Class to handle the main window functionality.
