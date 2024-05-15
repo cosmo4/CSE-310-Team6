@@ -87,6 +87,12 @@ class DrawWindow:
         self.canvas = tk.Canvas(self.root, bg="white", width=400, height=400)
         self.canvas.pack(fill=tk.BOTH, expand=True)
 
+    def open_draw_window(self):
+        """
+        Open the draw window.
+        """
+        
+
 class MainWindow:
     """
     Class to handle the main window functionality.
