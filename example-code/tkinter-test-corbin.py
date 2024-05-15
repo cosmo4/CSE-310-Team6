@@ -1,6 +1,7 @@
 # i created this file to experiment and familiarize myself with tkinter, as well as get it working with a firestore db.
 # you will need to run pip install firebase-admin to import firebase, and have the path to the key
 
+import pyrebase
 import tkinter as tk
 from tkinter import messagebox
 import firebase_admin
@@ -10,8 +11,37 @@ from firebase_admin import credentials, firestore
 cred = credentials.Certificate(r"C:\Users\cjand\OneDrive - BYU-Idaho\CSE 310\Team Project\notes-manager-81e62-firebase-adminsdk-ueu3m-b003348f0b.json")
 firebase_admin.initialize_app(cred)
 
+API_KEY = 'AIzaSyC-NJByPVn8XpksSCkSctCja08tr5creYU'
+
 # store the firestore call as the variable db
 db = firestore.client()
+
+firebaseConfig = {
+                'apiKey': "AIzaSyC-NJByPVn8XpksSCkSctCja08tr5creYU",
+                'authDomain': "notes-manager-81e62.firebaseapp.com",
+                'databaseURL': "https://notes-manager-81e62.firebaseio.com",
+                'projectId': "notes-manager-81e62",
+                'storageBucket': "notes-manager-81e62.appspot.com",
+                'messagingSenderId': "88497487267",
+                'appId': "1:88497487267:web:e27eb195f07116bdedee16",
+                'measurementId': "G-JB077QZ9QM"
+}
+
+firebase = pyrebase.initialize_app(firebaseConfig)
+auth = firebase.auth()
+
+def login():
+    pass
+
+def signup():
+    print("Sign up:")
+    email = input("Enter email: ")
+    password = input("Enter password: ")
+    try:
+        user = auth.create_user_with_email_and_password(email, password)
+    except:
+        print("User already exists")
+    return
 
 def create_new_note():
     def save_note():
