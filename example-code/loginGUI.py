@@ -139,27 +139,3 @@ if __name__ == "__main__":
     app = NoteManagerApp(root)
     root.mainloop()
 
-class NoteManagerApp:
-    """
-    Main application class to manage the flow between login and main windows.
-    """
-    def __init__(self, root):
-        """
-        Initialize the application with the login window.
-        """
-        self.root = root
-        self.login_window = LoginWindow(self.root, self)
-
-    def open_main_window(self):
-        """
-        Transition from login window to main window.
-        """
-        self.login_window.frame.destroy()
-        self.main_window = MainWindow(self.root)
-
-if __name__ == "__main__":
-    # Create the main Tkinter root window
-    root = tk.Tk()
-    # Initialize and run the application
-    app = NoteManagerApp(root)
-    root.mainloop()
