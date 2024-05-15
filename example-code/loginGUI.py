@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+from aiFileTest import summarize
 
 class LoginWindow:
     """
@@ -95,7 +96,7 @@ class MainWindow:
         self.new_note_button.pack(pady=10)
 
         # Summarize button
-        self.summarize_button = tk.Button(self.button_frame, text="Summarize", width=20, height=2)
+        self.summarize_button = tk.Button(self.button_frame, text="Summarize", command=summarize, width=20, height=2)
         self.summarize_button.pack(pady=10)
 
         # Draw button
