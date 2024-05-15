@@ -25,10 +25,10 @@ class LoginWindow:
         title_label.pack(pady=10)
 
         # Username field
-        self.username_label = tk.Label(self.frame, text="Username")
-        self.username_label.pack(pady=5)
-        self.username_entry = tk.Entry(self.frame)
-        self.username_entry.pack(pady=5)
+        self.email_label = tk.Label(self.frame, text="Username")
+        self.email_label.pack(pady=5)
+        self.email_entry = tk.Entry(self.frame)
+        self.email_entry.pack(pady=5)
 
         # Password field
         self.password_label = tk.Label(self.frame, text="Password")
@@ -52,20 +52,20 @@ class LoginWindow:
         """
         Handle user account creation.
         """
-        username = self.username_entry.get()
+        email = self.email_entry.get()
         password = self.password_entry.get()
-        if username and password:
+        if email and password:
             messagebox.showinfo("Account Created", "Account created successfully. You can now sign in.")
         else:
-            messagebox.showwarning("Input Error", "Please enter both username and password")
+            messagebox.showwarning("Input Error", "Please enter both a valid email and password")
 
     def sign_in(self):
         """
         Handle user sign-in.
         """
-        username = self.username_entry.get()
+        email = self.email_entry.get()
         password = self.password_entry.get()
-        if username and password:
+        if email and password:
             self.app.open_main_window()
         else:
             messagebox.showwarning("Input Error", "Please enter both username and password")
