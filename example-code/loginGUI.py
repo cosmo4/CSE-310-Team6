@@ -19,13 +19,13 @@ class LoginWindow:
         self.frame.pack(pady=20)
 
         # Add a label with instructions
-        title_label = tk.Label(self.frame, text=('Please log in with your username and password.\n'
-                                                 '\nIf you have never logged in, enter a username and password '
+        title_label = tk.Label(self.frame, text=('Please log in with a valid email and password.\n'
+                                                 '\nIf you have never logged in, enter a valid email and password '
                                                  'and click "Create Account".'), wraplength=350, justify="left")
         title_label.pack(pady=10)
 
         # Username field
-        self.email_label = tk.Label(self.frame, text="Username")
+        self.email_label = tk.Label(self.frame, text="Email")
         self.email_label.pack(pady=5)
         self.email_entry = tk.Entry(self.frame)
         self.email_entry.pack(pady=5)
@@ -68,7 +68,7 @@ class LoginWindow:
         if email and password:
             self.app.open_main_window()
         else:
-            messagebox.showwarning("Input Error", "Please enter both username and password")
+            messagebox.showwarning("Input Error", "Please enter valid email and password")
 
 class MainWindow:
     """
