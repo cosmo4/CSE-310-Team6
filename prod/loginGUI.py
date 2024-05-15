@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from aiFileTest import summarize
+from drawwindow import DrawWindow
 
 class LoginWindow:
     """
@@ -71,28 +72,6 @@ class LoginWindow:
         else:
             messagebox.showwarning("Input Error", "Please enter both username and password")
 
-class DrawWindow:
-    """
-    Class to handle the draw window functionality.
-    """
-    def __init__(self, root):
-        """
-        Initialize the draw window.
-        """
-        self.root = root
-        self.root.title("Draw")
-        self.root.geometry("400x400")
-
-        # Create the canvas for drawing
-        self.canvas = tk.Canvas(self.root, bg="white", width=400, height=400)
-        self.canvas.pack(fill=tk.BOTH, expand=True)
-
-    def open_draw_window(self):
-        """
-        Open the draw window.
-        """
-        
-
 class MainWindow:
     """
     Class to handle the main window functionality.
@@ -122,7 +101,7 @@ class MainWindow:
         self.summarize_button.pack(pady=10)
 
         # Draw button
-        self.draw_button = tk.Button(self.button_frame, text="Draw", width=20, height=2)
+        self.draw_button = tk.Button(self.button_frame, text="Draw", command=DrawWindow, width=20, height=2)
         self.draw_button.pack(pady=10)
 
         # Set Reminder button
