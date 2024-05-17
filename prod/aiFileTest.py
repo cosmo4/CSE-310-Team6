@@ -5,6 +5,7 @@
 
 # Import OpenAI library
 from openai import OpenAI
+from openai import OpenAIError
 from tkinter import *
 from tkinter import messagebox
 
@@ -25,15 +26,6 @@ def summarize():
 
    # Create a vector store to store the notes documents
    vector_store = client.beta.vector_stores.create(name="Notes")
-   # Give the file path to the notes document
-   file_paths = [file_name]
-   # Open the file and store the stream
-   file_streams = [open(path, "rb") for path in file_paths]
-
-   # Upload the file to the vector store
-   file_batch = client.beta.vector_stores.file_batches.upload_and_poll(
-      vector_store_id=vector_store.id, files=file_streams
-   )
 
    # Update the assistant to use the vector store for file access
    assistant = client.beta.assistants.update(
@@ -54,7 +46,7 @@ def summarize():
             "content": "Summarize these notes in a more compressed manner. They should still be useable as notes for the various topics, just shortened and summarized.",
             "attachments": [
                { "file_id": message_file.id, "tools": [{"type": "file_search"}]}
-            ],
+            ]
          }
       ]
    )
@@ -86,4 +78,25 @@ def summarize():
 
    messagebox.showinfo(file_name + " Summarized", message_content.value)
 
-   return message_content.value
+   # Remove the file and vector store from API storage
+   try:
+      file_list = client.files.list()
+      for file in file_list:
+         try:
+            client.files.delete(file.id)
+            print(f"Deleted file with ID: {file.id}")
+         except OpenAIError as e:
+            print(f"Failed to delete file with ID: {file.id}. Error: {e}")
+      
+      vector_store_list = client.beta.vector_stores.list()
+      for vector in vector_store_list:
+         try:
+            client.beta.vector_stores.delete(vector.id)
+            print(f"Deleted vector store with ID: {vector.id}")
+         except OpenAIError as e:
+            print(f"Failed to delete vector store with ID: {vector.id}. Error: {e}")
+
+   except OpenAIError as e:
+      print(f"An error occurred while deleting: {e}")
+
+summarize()
