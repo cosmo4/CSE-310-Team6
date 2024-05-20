@@ -1,11 +1,8 @@
 import tkinter as tk
 from tkinter import messagebox
+from upload import upload
 from aiFileTest import summarize
 
-# I tried to import from different file but did not working I will figure out later -Jehyeon
-from tkinter import filedialog
-def upload():
-    filename = filedialog.askopenfilename(initialdir = "/", title = "Select a File", filetypes = (("Text files", "*.txt*"), ("all files", "*.*")))
 
 class LoginWindow:
     """
@@ -123,7 +120,7 @@ class MainWindow:
         self.new_note_button.pack(pady=10)
 
         # Summarize button
-        self.summarize_button = tk.Button(self.button_frame, text="Summarize", command=summarize, width=20, height=2)
+        self.summarize_button = tk.Button(self.button_frame, text="Summarize", width=20, height=2, command=summarize)
         self.summarize_button.pack(pady=10)
 
         # Draw button
