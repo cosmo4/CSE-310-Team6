@@ -101,7 +101,7 @@ class MainWindow:
         self.summarize_button.pack(pady=10)
 
         # Draw button
-        self.draw_button = tk.Button(self.button_frame, text="Draw", command=DrawWindow, width=20, height=2)
+        self.draw_button = tk.Button(self.button_frame, text="Draw", command=self.open_draw_window, width=20, height=2)
         self.draw_button.pack(pady=10)
 
         # Set Reminder button
@@ -115,6 +115,10 @@ class MainWindow:
         # Text entry box on the right side
         self.text_entry = tk.Text(self.frame, wrap=tk.WORD)
         self.text_entry.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10, pady=10)
+
+    # Function to launch the drawing window
+    def open_draw_window(self):
+            draw_window = DrawWindow(self.root)
 
 class NoteManagerApp:
     """

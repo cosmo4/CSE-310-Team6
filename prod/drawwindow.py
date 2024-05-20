@@ -1,23 +1,25 @@
 import tkinter as tk
+from tkinter import messagebox
 
-class DrawWindow:
-    """
-    Class to handle the draw window functionality.
-    """
-    def __init__(self, root):
-        """
-        Initialize the draw window.
-        """
-        self.root = root
-        self.root.title("Draw")
-        self.root.geometry("400x400")
+class DrawWindow(tk.Toplevel):
+    def __init__(self, master):
+        super().__init__(master)
+        self.title("Draw Window")
 
-        # Create the canvas for drawing
-        self.canvas = tk.Canvas(self.root, bg="white", width=400, height=400)
-        self.canvas.pack(fill=tk.BOTH, expand=True)
+        self.canvas = tk.Canvas(self, width=400, height=400, bg="white")
+        self.canvas.pack()
 
-    def save_drawing(self, filename):
-        """
-        Save the drawing to a file.
-        """
-        self.canvas.postscript(file=filename, colormode='color')
+        self.convert_button = tk.Button(self, text="Convert to ASCII", command=self.convert_to_ascii)
+        self.convert_button.pack()
+
+        self.canvas.bind("<B1-Motion>", self.draw)
+
+    def draw(self, event):
+        x, y = event.x, event.y
+        r = 3
+        self.canvas.create_oval(x-r, y-r, x+r, y+r, fill="black")
+
+    def convert_to_ascii(self):
+        # Implement your ASCII conversion logic here
+        messagebox.showinfo("Conversion Result", "ASCII art will be displayed here.")
+
