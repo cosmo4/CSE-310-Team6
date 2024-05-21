@@ -5,7 +5,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 
 # reference the firebase private key JSON that authorizes the program to write to the database
-cred = credentials.Certificate(r"C:\Users\cjand\OneDrive - BYU-Idaho\CSE 310\Team Project\notes-manager-81e62-firebase-adminsdk-ueu3m-b003348f0b.json")
+cred = credentials.Certificate(r"C:\Users\cjandrus99\OneDrive - BYU-Idaho\CSE 310\Team Project\notes-manager-81e62-firebase-adminsdk-ueu3m-b003348f0b.json")
 firebase_admin.initialize_app(cred)
 
 API_KEY = 'AIzaSyC-NJByPVn8XpksSCkSctCja08tr5creYU'
