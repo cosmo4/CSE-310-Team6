@@ -88,10 +88,6 @@ class LoginWindow:
             messagebox.showinfo("Account Created", "Account created successfully. Confirm signup in your email inbox.")
         except:
             messagebox.showwarning("Input Error", "Please enter both email and password")
-        # if email and password:
-        #     messagebox.showinfo("Account Created", "Account created successfully. You can now sign in.")
-        # else:
-        #     messagebox.showwarning("Input Error", "Please enter both email and password")
 
     def sign_in(self):
         """
@@ -106,10 +102,6 @@ class LoginWindow:
         except:
             messagebox.showwarning("Input Error", "Login failed. Please enter both a valid email and password")
 
-        # if email and password:
-        #     self.app.open_main_window()
-        # else:
-        #     messagebox.showwarning("Input Error", "Please enter both email and password")
 
 class MainWindow:
     """
