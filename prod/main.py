@@ -55,7 +55,10 @@ class MainWindow:
 
     # Function to launch the drawing window
     def open_draw_window(self):
-            draw_window = DrawWindow(self.root)
+        draw_window = DrawWindow(self.root)
+            
+    def open_new_note_window(self):
+        new_note = NewNoteWindow(self.root)
 
 class NoteManagerApp:
     """

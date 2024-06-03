@@ -1,6 +1,6 @@
 import tkinter as tk
-import pyrebase
 from tkinter import messagebox
+import pyrebase
 
 class LoginWindow:
     """
@@ -30,8 +30,6 @@ class LoginWindow:
         self.app = app
         self.root.title("Note Manager")
         self.root.geometry("400x300")
-
-        
 
         # Create the frame for the login window
         self.frame = tk.Frame(self.root)

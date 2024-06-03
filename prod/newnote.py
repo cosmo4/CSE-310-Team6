@@ -1,71 +1,85 @@
 import tkinter as tk
 from tkinter import messagebox
+from datetime import date
 import pyrebase
 
-# Firebase configuration
 firebaseConfig = {
-    'apiKey': "AIzaSyC-NJByPVn8XpksSCkSctCja08tr5creYU",
-    'authDomain': "notes-manager-81e62.firebaseapp.com",
-    'databaseURL': "https://notes-manager-81e62.firebaseio.com",
-    'projectId': "notes-manager-81e62",
-    'storageBucket': "notes-manager-81e62.appspot.com",
-    'messagingSenderId': "88497487267",
-    'appId': "1:88497487267:web:e27eb195f07116bdedee16",
-    'measurementId': "G-JB077QZ9QM"
+                'apiKey': "AIzaSyC-NJByPVn8XpksSCkSctCja08tr5creYU",
+                'authDomain': "notes-manager-81e62.firebaseapp.com",
+                'databaseURL': "https://notes-manager-81e62.firebaseio.com",
+                'projectId': "notes-manager-81e62",
+                'storageBucket': "notes-manager-81e62.appspot.com",
+                'messagingSenderId': "88497487267",
+                'appId': "1:88497487267:web:e27eb195f07116bdedee16",
+                'measurementId': "G-JB077QZ9QM"
 }
 
 firebase = pyrebase.initialize_app(firebaseConfig)
 db = firebase.database()
 
+import tkinter as tk
+from tkinter import messagebox
+from datetime import date
+
 class NewNoteWindow:
-    def __init__(self, parent):
-        self.parent = parent
-        self.new_note_window = tk.Toplevel(parent)
-        self.new_note_window.title("New Note")
-        self.new_note_window.geometry("400x300")
+    def __init__(self, root):
+        self.root = root
+        self.note_window = tk.Toplevel(self.root)
+        self.note_window.title("New Note")
+        self.note_window.geometry("400x400")
+        self.note_window["padx"] = 20
+        self.note_window["pady"] = 20
 
-        # Title field
-        self.title_label = tk.Label(self.new_note_window, text="Title")
-        self.title_label.pack(pady=5)
-        self.title_entry = tk.Entry(self.new_note_window, width=50)
-        self.title_entry.pack(pady=5)
+        # Title entry
+        tk.Label(self.note_window, text="Title:").pack(anchor="w")
+        self.title_entry = tk.Entry(self.note_window, width=30)
+        self.title_entry.pack(pady=(5, 2), anchor="w")
 
-        # Date field
-        self.date_label = tk.Label(self.new_note_window, text="Date")
-        self.date_label.pack(pady=5)
-        self.date_entry = tk.Entry(self.new_note_window, width=50)
-        self.date_entry.pack(pady=5)
+        # Date entry
+        tk.Label(self.note_window, text="Date:").pack(anchor="w", pady=(10, 5))
+        self.date_entry = tk.Entry(self.note_window, width=30)
+        self.date_entry.pack(pady=(0, 5), anchor="w")
+        self.date_entry.insert(0, str(date.today()))  # Automatically fill with today's date
 
-        # Text box
-        self.text_label = tk.Label(self.new_note_window, text="Note")
-        self.text_label.pack(pady=5)
-        self.text_box = tk.Text(self.new_note_window, wrap=tk.WORD, height=10)
-        self.text_box.pack(pady=5)
+        # Notes text area
+        tk.Label(self.note_window, text="Notes:").pack(anchor="w", pady=(10, 5))
+        self.notes_text = tk.Text(self.note_window, width=50, height=10)
+        self.notes_text.pack(pady=(0, 20), anchor="w")
 
-        # Buttons
-        self.button_frame = tk.Frame(self.new_note_window)
-        self.button_frame.pack(pady=10)
+        # Buttons frame
+        self.buttons_frame = tk.Frame(self.note_window)
+        self.buttons_frame.pack(anchor="w")
 
-        self.save_button = tk.Button(self.button_frame, text="Save Note", command=self.save_note)
-        self.save_button.grid(row=0, column=0, padx=5)
+        # Save button
+        self.save_button = tk.Button(self.buttons_frame, text="Save", command=self.save_note)
+        self.save_button.pack(side=tk.LEFT, padx=5)
 
-        self.cancel_button = tk.Button(self.button_frame, text="Cancel", command=self.new_note_window.destroy)
-        self.cancel_button.grid(row=0, column=1, padx=5)
+        # Cancel button
+        self.cancel_button = tk.Button(self.buttons_frame, text="Cancel", command=self.cancel_note)
+        self.cancel_button.pack(side=tk.LEFT, padx=5)
 
     def save_note(self):
         title = self.title_entry.get()
         date = self.date_entry.get()
-        note = self.text_box.get("1.0", tk.END).strip()
+        note = self.notes_text.get("1.0", tk.END).strip()
 
         if title and date and note:
-            note_data = {
-                "title": title,
-                "date": date,
-                "note": note
-            }
-            db.child("notes").push(note_data)
-            messagebox.showinfo("Success", "Note saved successfully!")
-            self.new_note_window.destroy()
+            save_to_firestore(title, date, note)
+            messagebox.showinfo("Note Saved", "Note saved successfully!")
+            self.note_window.destroy()
         else:
             messagebox.showwarning("Input Error", "Please fill out all fields")
 
+    def cancel_note(self):
+        self.note_window.destroy()
+
+def save_to_firestore(title, date, note):
+    # Get a reference to the database
+    notes_ref = db.child("notes")
+
+    # Push the new note data to the database
+    new_note_ref = notes_ref.push({
+        'title': title,
+        'date': date,
+        'note': note
+    })
