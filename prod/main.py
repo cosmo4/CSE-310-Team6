@@ -7,6 +7,7 @@ from upload import upload
 from aiFileTest import summarize
 from drawwindow import DrawWindow
 from login import LoginWindow
+from newnote import NewNoteWindow
 
 class MainWindow:
     """
@@ -29,7 +30,7 @@ class MainWindow:
         self.button_frame.pack(side=tk.LEFT, fill=tk.Y, padx=10, pady=10)
 
         # New Note button
-        self.new_note_button = tk.Button(self.button_frame, text="New Note", width=20, height=2)
+        self.new_note_button = tk.Button(self.button_frame, text="New Note", width=20, height=2, command=self.open_new_note_window)
         self.new_note_button.pack(pady=10)
 
         # Summarize button
