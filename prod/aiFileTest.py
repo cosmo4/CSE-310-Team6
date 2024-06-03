@@ -11,7 +11,7 @@ from tkinter import messagebox
 
 def summarize():
    # Initialize an OpenAI client
-   client = OpenAI('')
+   client = OpenAI()
    # Set a file path
    file_name = "notes.docx"
 
@@ -98,5 +98,3 @@ def summarize():
 
    except OpenAIError as e:
       print(f"An error occurred while deleting: {e}")
-
-summarize()
