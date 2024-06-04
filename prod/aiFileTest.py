@@ -6,14 +6,58 @@
 # Import OpenAI library
 from openai import OpenAI
 from openai import OpenAIError
+import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
+import os
+from tkinter import simpledialog, Listbox, Toplevel
+
+def select_file():
+   # Function to handle selection
+   def on_select():
+      selection = listbox.curselection()
+      if selection:
+         selected_file = listbox.get(selection[0])
+         dialog.user_selected_file = os.path.join(folder_path, selected_file)
+         print("Selected:", dialog.user_selected_file)
+         dialog.destroy()  # Close the dialog
+
+   curr_dir = os.getcwd()
+   folder_path = os.path.join(curr_dir,'prod/notes')
+   if not os.path.exists(folder_path):
+        print(f"Not such folder. Making new folder...")
+        os.makedirs(folder_path)
+   try:
+      files = os.listdir(folder_path)
+   except Exception as e:
+      print("Failed to list files:", e)
+      return
+
+   # Create a new window for file selection
+   dialog = Toplevel()
+   dialog.title("Select a file")
+   dialog.grab_set()
+   listbox = Listbox(dialog, width=50, height=10)
+   listbox.pack(padx=20, pady=20)
+
+   # Populate the listbox with files
+   for file in files:
+      listbox.insert(tk.END, file)
+
+   # Button to confirm selection
+   select_button = tk.Button(dialog, text="Select", command=on_select)
+   select_button.pack(pady=10)
+
+   dialog.user_selected_file = None
+   dialog.wait_window()
+
+   return dialog.user_selected_file
 
 def summarize():
    # Initialize an OpenAI client
    client = OpenAI()
    # Set a file path
-   file_name = "notes.docx"
+   file_name = select_file()
 
    # Create a new assistant named "Note Summarizer" using the gpt-3.5-turbo model with the given instructions
    assistant = client.beta.assistants.create(
@@ -35,7 +79,7 @@ def summarize():
 
    # Create a message file containing the notes
    message_file = client.files.create(
-      file=open("notes.docx", "rb"), purpose="assistants"
+      file=open(file_name, "rb"), purpose="assistants"
    )
 
    # Create a thread to interact with the assistant
