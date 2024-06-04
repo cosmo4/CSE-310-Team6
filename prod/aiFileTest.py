@@ -23,7 +23,7 @@ def select_file():
          dialog.destroy()  # Close the dialog
 
    curr_dir = os.getcwd()
-   folder_path = os.path.join(curr_dir,'prod/notes')
+   folder_path = os.path.join(curr_dir,'notes')
    if not os.path.exists(folder_path):
         print(f"Not such folder. Making new folder...")
         os.makedirs(folder_path)

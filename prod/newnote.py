@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from datetime import date
 import pyrebase
+import os
 
 firebaseConfig = {
                 'apiKey': "AIzaSyC-NJByPVn8XpksSCkSctCja08tr5creYU",
@@ -64,9 +65,13 @@ class NewNoteWindow:
         note = self.notes_text.get("1.0", tk.END).strip()
 
         if title and date and note:
-            save_to_firestore(title, date, note)
-            messagebox.showinfo("Note Saved", "Note saved successfully!")
-            self.note_window.destroy()
+            try:
+                save_to_firestore(title, date, note)
+                messagebox.showinfo("Note Saved", "Note saved successfully!")
+                self.note_window.destroy()
+            except:
+                save_local(title, note)
+                messagebox.showinfo("Saved Locally", "Error saving to cloud. Note saved locally.")
         else:
             messagebox.showwarning("Input Error", "Please fill out all fields")
 
@@ -83,3 +88,25 @@ def save_to_firestore(title, date, note):
         'date': date,
         'note': note
     })
+
+def save_local(title, note):
+    # Ensure the title is a valid filename (simple sanitization)
+    filename = "".join([c for c in title if c.isalpha() or c.isdigit() or c in (' ', '_', '-')]).rstrip()
+
+    # Find the correct folder to save the notes. This may need adjustment on final release.
+    curr_dir = os.getcwd()
+    folder_path = os.path.join(curr_dir,'notes')
+    if not os.path.exists(folder_path):
+        print(f"Not such folder. Making new folder...")
+        os.makedirs(folder_path)
+
+    # Construct the full path where the note will be saved
+    file_path = os.path.join(folder_path, f"{filename}.txt")
+
+    # Write the content to the file
+    try:
+        with open(file_path, 'w', encoding='utf-8') as file:
+            file.write(note)
+        messagebox.showinfo("Success", f"Note saved successfully as {file_path}")
+    except IOError as e:
+        messagebox.showerror("Error", f"Failed to save the note: {e}")
