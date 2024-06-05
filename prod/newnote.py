@@ -18,10 +18,6 @@ firebaseConfig = {
 firebase = pyrebase.initialize_app(firebaseConfig)
 db = firebase.database()
 
-import tkinter as tk
-from tkinter import messagebox
-from datetime import date
-
 class NewNoteWindow:
     def __init__(self, root):
         self.root = root
