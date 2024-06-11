@@ -1,6 +1,3 @@
-# pip install pyrebase4
-# pip install setuptools
-
 import tkinter as tk
 from tkinter import messagebox
 from upload import upload
@@ -13,10 +10,11 @@ class MainWindow:
     """
     Class to handle the main window functionality.
     """
-    def __init__(self, root):
+    def __init__(self, root, user):
         """
         Initialize the main window.
         """
+        self.user = user
         self.root = root
         self.root.title("Note Manager")
         self.root.geometry("600x400")
@@ -55,10 +53,10 @@ class MainWindow:
 
     # Function to launch the drawing window
     def open_draw_window(self):
-        draw_window = DrawWindow(self.root)
+        draw_window = DrawWindow(self.root, self.user)
             
     def open_new_note_window(self):
-        new_note = NewNoteWindow(self.root)
+        new_note = NewNoteWindow(self.root, self.user)
 
 class NoteManagerApp:
     """
@@ -70,13 +68,15 @@ class NoteManagerApp:
         """
         self.root = root
         self.login_window = LoginWindow(self.root, self)
+        self.user = None
 
-    def open_main_window(self):
+    def open_main_window(self, user):
         """
         Transition from login window to main window.
         """
+        self.user = user
         self.login_window.frame.destroy()
-        self.main_window = MainWindow(self.root)
+        self.main_window = MainWindow(self.root, self.user)
 
 if __name__ == "__main__":
     # Create the main Tkinter root window

@@ -7,7 +7,7 @@ import os
 firebaseConfig = {
                 'apiKey': "AIzaSyC-NJByPVn8XpksSCkSctCja08tr5creYU",
                 'authDomain': "notes-manager-81e62.firebaseapp.com",
-                'databaseURL': "https://notes-manager-81e62.firebaseio.com",
+                'databaseURL': "https://notes-manager-81e62-default-rtdb.firebaseio.com",
                 'projectId': "notes-manager-81e62",
                 'storageBucket': "notes-manager-81e62.appspot.com",
                 'messagingSenderId': "88497487267",
@@ -19,8 +19,10 @@ firebase = pyrebase.initialize_app(firebaseConfig)
 db = firebase.database()
 
 class NewNoteWindow:
-    def __init__(self, root):
+    def __init__(self, root, user):
         self.root = root
+        self.user = user
+        
         self.note_window = tk.Toplevel(self.root)
         self.note_window.title("New Note")
         self.note_window.geometry("400x400")
@@ -60,12 +62,18 @@ class NewNoteWindow:
         date = self.date_entry.get()
         note = self.notes_text.get("1.0", tk.END).strip()
 
+        data = {"title": title, "date": date, "note": note}
+
         if title and date and note:
             try:
-                save_to_firestore(title, date, note)
-                messagebox.showinfo("Note Saved", "Note saved successfully!")
+                db.child("notes").child(self.user['localId']).push(data, self.user['idToken'])
+                messagebox.showinfo("Success", "Note saved successfully!")
                 self.note_window.destroy()
-            except:
+            
+            except Exception as e:
+                messagebox.showwarning("Error", f"Failed to save note: {e}")
+                print("Error:", e)
+                print("Data:", data)
                 save_local(title, note)
                 messagebox.showinfo("Saved Locally", "Error saving to cloud. Note saved locally.")
         else:
@@ -73,17 +81,6 @@ class NewNoteWindow:
 
     def cancel_note(self):
         self.note_window.destroy()
-
-def save_to_firestore(title, date, note):
-    # Get a reference to the database
-    notes_ref = db.child("notes")
-
-    # Push the new note data to the database
-    new_note_ref = notes_ref.push({
-        'title': title,
-        'date': date,
-        'note': note
-    })
 
 def save_local(title, note):
     # Ensure the title is a valid filename (simple sanitization)

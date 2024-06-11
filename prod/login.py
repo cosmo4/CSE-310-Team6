@@ -2,15 +2,10 @@ import tkinter as tk
 from tkinter import messagebox
 import pyrebase
 
-class LoginWindow:
-    """
-    Class to handle the login window functionality.
-    """
-
-    firebaseConfig = {
+firebaseConfig = {
         'apiKey': "AIzaSyC-NJByPVn8XpksSCkSctCja08tr5creYU",
         'authDomain': "notes-manager-81e62.firebaseapp.com",
-        'databaseURL': "https://notes-manager-81e62.firebaseio.com",
+        'databaseURL': "https://notes-manager-81e62-default-rtdb.firebaseio.com",
         'projectId': "notes-manager-81e62",
         'storageBucket': "notes-manager-81e62.appspot.com",
         'messagingSenderId': "88497487267",
@@ -18,10 +13,12 @@ class LoginWindow:
         'measurementId': "G-JB077QZ9QM"
     }
 
-
-    firebase = pyrebase.initialize_app(firebaseConfig)
-    auth = firebase.auth()
-
+firebase = pyrebase.initialize_app(firebaseConfig)
+auth = firebase.auth()
+class LoginWindow:
+    """
+    Class to handle the login window functionality.
+    """
     def __init__(self, root, app):
         """
         Initialize the login window.
@@ -75,10 +72,10 @@ class LoginWindow:
         password = self.password_entry.get()
 
         try:
-            user = self.auth.create_user_with_email_and_password(email, password)
+            user = auth.create_user_with_email_and_password(email, password)
             messagebox.showinfo("Account Created", "Account created successfully. Confirm signup in your email inbox.")
         except:
-            messagebox.showwarning("Input Error", "Please enter both email and password")
+            messagebox.showwarning("Input Error", "Please enter both valid email and password.")
 
     def sign_in(self):
         """
@@ -88,7 +85,8 @@ class LoginWindow:
         password = self.password_entry.get()
 
         try:
-            user = self.auth.sign_in_with_email_and_password(email, password)
-            self.app.open_main_window()
+            login = auth.sign_in_with_email_and_password(email, password)
+            self.app.open_main_window(login)
+            token = auth.get_account_info(login['idToken'])
         except:
-            messagebox.showwarning("Input Error", "Login failed. Please enter both a valid email and password")
+            messagebox.showwarning("Input Error", "Login failed. Please enter both a valid email and password.")
