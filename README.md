@@ -1,6 +1,6 @@
 ### CSE 310 Team 6
 
-Luke Warner, Avery Anderson, Gabe Hayes, Sawyer Burton, Jehyeon Kweon, Corbin Andrus
+Luke Warner, Avery Anderson, Gabe Hayes, Jehyeon Kweon, Corbin Andrus
 
 ## Overview
 
