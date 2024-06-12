@@ -4,8 +4,22 @@ from upload import upload
 from summarizeNote import summarize
 from drawwindow import DrawWindow
 from login import LoginWindow
-from newnote import NewNoteWindow
+from newnote import NewNoteWindow, ViewNoteWindow
+import pyrebase
 
+firebaseConfig = {
+                'apiKey': "AIzaSyC-NJByPVn8XpksSCkSctCja08tr5creYU",
+                'authDomain': "notes-manager-81e62.firebaseapp.com",
+                'databaseURL': "https://notes-manager-81e62-default-rtdb.firebaseio.com",
+                'projectId': "notes-manager-81e62",
+                'storageBucket': "notes-manager-81e62.appspot.com",
+                'messagingSenderId': "88497487267",
+                'appId': "1:88497487267:web:e27eb195f07116bdedee16",
+                'measurementId': "G-JB077QZ9QM"
+}
+
+firebase = pyrebase.initialize_app(firebaseConfig)
+db = firebase.database()
 class MainWindow:
     """
     Class to handle the main window functionality.
@@ -44,13 +58,16 @@ class MainWindow:
         self.set_reminder_button.pack(pady=10)
 
         # Upload Notes button
-
         self.upload_notes_button = tk.Button(self.button_frame, text="Upload Notes", width=20, height=2, command=self.open_upload_file)
         self.upload_notes_button.pack(pady=10)
 
-        # Text entry box on the right side
-        self.text_entry = tk.Text(self.frame, wrap=tk.WORD)
-        self.text_entry.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10, pady=10)
+        # Listbox to display notes
+        self.notes_listbox = tk.Listbox(self.frame)
+        self.notes_listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10, pady=10)
+        self.notes_listbox.bind("<Double-1>", self.open_note)
+
+        # Load notes from the database
+        self.load_notes()
 
     # Function to launch the drawing window
     def open_upload_file(self):
@@ -62,9 +79,31 @@ class MainWindow:
         draw_window = DrawWindow(self.root, self.user)
             
     def open_new_note_window(self, text=""):
-        new_note = NewNoteWindow(self.root, self.user, text)
+        new_note = NewNoteWindow(self.root, self.user, self, text)
 
-    
+    def load_notes(self):
+        self.notes_listbox.delete(0, tk.END)  # Clear the listbox
+        try:
+            notes = db.child("notes").child(self.user['localId']).get(self.user['idToken']).val()
+            if notes:
+                for note_id, note in notes.items():
+                    note_display_text = f"{note['title']} ({note['date']})"
+                    self.notes_listbox.insert(tk.END, note_display_text)
+            else:
+                self.notes_listbox.insert(tk.END, "No notes available.")
+        except Exception as e:
+            messagebox.showwarning("Error", f"Failed to load notes: {e}")
+
+    def open_note(self, event):
+        selected_index = self.notes_listbox.curselection()
+        if selected_index:
+            selected_note_display_text = self.notes_listbox.get(selected_index)
+            selected_note_title = selected_note_display_text.split(" (")[0]  # Extract the title part
+            notes = db.child("notes").child(self.user['localId']).get(self.user['idToken']).val()
+            for note_id, note in notes.items():
+                if note['title'] == selected_note_title:
+                    ViewNoteWindow(self.root, note)
+                    break
 
 class NoteManagerApp:
     """

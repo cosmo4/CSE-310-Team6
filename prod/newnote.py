@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
-from datetime import date
+from datetime import datetime
 import pyrebase
 import os
 
@@ -19,9 +19,10 @@ firebase = pyrebase.initialize_app(firebaseConfig)
 db = firebase.database()
 
 class NewNoteWindow:
-    def __init__(self, root, user, text=""):
+    def __init__(self, root, user, main_window, text=""):
         self.root = root
         self.user = user
+        self.main_window = main_window
         
         self.note_window = tk.Toplevel(self.root)
         self.note_window.title("New Note")
@@ -35,10 +36,11 @@ class NewNoteWindow:
         self.title_entry.pack(pady=(5, 2), anchor="w")
 
         # Date entry
+        current_time = datetime.now().strftime("%m/%d/%Y %H:%M:%S")
         tk.Label(self.note_window, text="Date:").pack(anchor="w", pady=(10, 5))
         self.date_entry = tk.Entry(self.note_window, width=30)
         self.date_entry.pack(pady=(0, 5), anchor="w")
-        self.date_entry.insert(0, str(date.today()))  # Automatically fill with today's date
+        self.date_entry.insert(0, current_time)  # Automatically fill with today's date
 
         # Notes text area
         tk.Label(self.note_window, text="Notes:").pack(anchor="w", pady=(10, 5))
@@ -69,6 +71,7 @@ class NewNoteWindow:
             try:
                 db.child("notes").child(self.user['localId']).push(data, self.user['idToken'])
                 messagebox.showinfo("Success", "Note saved successfully!")
+                self.main_window.load_notes()  # Reload notes
                 self.note_window.destroy()
             
             except Exception as e:
@@ -104,3 +107,33 @@ def save_local(title, note):
         messagebox.showinfo("Success", f"Note saved successfully as {file_path}")
     except IOError as e:
         messagebox.showerror("Error", f"Failed to save the note: {e}")
+
+class ViewNoteWindow:
+    def __init__(self, root, note):
+        self.root = root
+        self.note = note
+
+        self.view_window = tk.Toplevel(self.root)
+        self.view_window.title("View Note")
+        self.view_window.geometry("400x400")
+
+        self.title_label = tk.Label(self.view_window, text="Title:")
+        self.title_label.pack(anchor="w")
+        self.title_entry = tk.Entry(self.view_window, width=30)
+        self.title_entry.insert(0, note['title'])
+        self.title_entry.config(state="readonly")
+        self.title_entry.pack(anchor="w")
+
+        self.date_label = tk.Label(self.view_window, text="Date:")
+        self.date_label.pack(anchor="w")
+        self.date_entry = tk.Entry(self.view_window, width=30)
+        self.date_entry.insert(0, note['date'])
+        self.date_entry.config(state="readonly")
+        self.date_entry.pack(anchor="w")
+
+        self.note_label = tk.Label(self.view_window, text="Note:")
+        self.note_label.pack(anchor="w")
+        self.note_text = tk.Text(self.view_window, width=50, height=10)
+        self.note_text.insert(tk.END, note['note'])
+        self.note_text.config(state="disabled")
+        self.note_text.pack(anchor="w")
