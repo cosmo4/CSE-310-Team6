@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+from tkinter import font
 from datetime import datetime
 import pyrebase
 import os
@@ -43,7 +44,7 @@ class NewNoteWindow:
         self.date_entry.insert(0, current_time)  # Automatically fill with today's date
 
         # Notes text area
-        tk.Label(self.note_window, text="Notes:").pack(anchor="w", pady=(10, 5))
+        tk.Label(self.note_window, text="Note:").pack(anchor="w", pady=(10, 5))
         self.notes_text = tk.Text(self.note_window, width=50, height=10)
         self.notes_text.pack(pady=(0, 20), anchor="w")
         self.notes_text.insert("end", text)
@@ -115,25 +116,35 @@ class ViewNoteWindow:
 
         self.view_window = tk.Toplevel(self.root)
         self.view_window.title("View Note")
-        self.view_window.geometry("400x400")
+        self.view_window.geometry("500x500")
+        self.view_window["padx"] = 20
+        self.view_window["pady"] = 20
 
         self.title_label = tk.Label(self.view_window, text="Title:")
-        self.title_label.pack(anchor="w")
-        self.title_entry = tk.Entry(self.view_window, width=30)
+        self.title_label.pack(anchor="w", padx=10, pady=5)
+        self.title_entry = tk.Entry(self.view_window, width=50)
         self.title_entry.insert(0, note['title'])
         self.title_entry.config(state="readonly")
-        self.title_entry.pack(anchor="w")
+        self.title_entry.pack(anchor="w", padx=10, pady=5)
 
         self.date_label = tk.Label(self.view_window, text="Date:")
-        self.date_label.pack(anchor="w")
-        self.date_entry = tk.Entry(self.view_window, width=30)
+        self.date_label.pack(anchor="w", padx=10, pady=5)
+        self.date_entry = tk.Entry(self.view_window, width=50)
         self.date_entry.insert(0, note['date'])
         self.date_entry.config(state="readonly")
-        self.date_entry.pack(anchor="w")
+        self.date_entry.pack(anchor="w", padx=10, pady=5)
 
         self.note_label = tk.Label(self.view_window, text="Note:")
-        self.note_label.pack(anchor="w")
-        self.note_text = tk.Text(self.view_window, width=50, height=10)
+        self.note_label.pack(anchor="w", padx=10, pady=5)
+        
+        self.text_frame = tk.Frame(self.view_window)
+        self.text_frame.pack(fill="both", expand=True, padx=10, pady=5)
+
+        self.note_text = tk.Text(self.text_frame, wrap="word", width=60, height=15)
         self.note_text.insert(tk.END, note['note'])
         self.note_text.config(state="disabled")
-        self.note_text.pack(anchor="w")
+
+        self.scrollbar = tk.Scrollbar(self.text_frame, orient="vertical", command=self.note_text.yview)
+        self.note_text.config(yscrollcommand=self.scrollbar.set)
+        self.scrollbar.pack(side="right", fill="y")
+        self.note_text.pack(side="left", fill="both", expand=True)
