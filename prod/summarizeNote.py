@@ -10,7 +10,23 @@ import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
 import os
-from tkinter import simpledialog, Listbox, Toplevel
+from tkinter import Listbox, Toplevel
+import pyrebase
+from threading import Thread
+
+firebaseConfig = {
+                'apiKey': "AIzaSyC-NJByPVn8XpksSCkSctCja08tr5creYU",
+                'authDomain': "notes-manager-81e62.firebaseapp.com",
+                'databaseURL': "https://notes-manager-81e62-default-rtdb.firebaseio.com",
+                'projectId': "notes-manager-81e62",
+                'storageBucket': "notes-manager-81e62.appspot.com",
+                'messagingSenderId': "88497487267",
+                'appId': "1:88497487267:web:e27eb195f07116bdedee16",
+                'measurementId': "G-JB077QZ9QM"
+}
+
+firebase = pyrebase.initialize_app(firebaseConfig)
+db = firebase.database()
 
 def select_file():
    # Function to handle selection
@@ -116,12 +132,12 @@ def summarize():
          cited_file = client.files.retrieve(file_citation.file_id)
          citations.append(f"[{index}] {cited_file.filename}")
 
-   # Print the summarized notes and any citations
-   # print(message_content.value)
-   # print("\n".join(citations))
-
    messagebox.showinfo(file_name + " Summarized", message_content.value)
+   thread = Thread(target = clear_storage, args=(10,))
+   thread.start()
 
+def clear_storage(args):
+   client = OpenAI()
    # Remove the file and vector store from API storage
    try:
       file_list = client.files.list()
