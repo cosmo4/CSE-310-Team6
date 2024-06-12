@@ -58,6 +58,11 @@ class MainWindow:
     def open_new_note_window(self):
         new_note = NewNoteWindow(self.root, self.user)
 
+    def open_upload_file(self):
+        text = upload()
+        note = NewNoteWindow(self.root, self.user)
+        note.notes_text.insert(text)
+
 class NoteManagerApp:
     """
     Main application class to manage the flow between login and main windows.

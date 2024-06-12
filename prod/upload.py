@@ -14,4 +14,4 @@ def upload():
         with open(filename, 'r') as r_file:
             text = r_file.read()
 
-    return (filename, text)
+    return text
