@@ -19,7 +19,7 @@ firebase = pyrebase.initialize_app(firebaseConfig)
 db = firebase.database()
 
 class NewNoteWindow:
-    def __init__(self, root, user):
+    def __init__(self, root, user, text=""):
         self.root = root
         self.user = user
         
@@ -44,6 +44,7 @@ class NewNoteWindow:
         tk.Label(self.note_window, text="Notes:").pack(anchor="w", pady=(10, 5))
         self.notes_text = tk.Text(self.note_window, width=50, height=10)
         self.notes_text.pack(pady=(0, 20), anchor="w")
+        self.notes_text.insert("end", text)
 
         # Buttons frame
         self.buttons_frame = tk.Frame(self.note_window)
@@ -90,7 +91,7 @@ def save_local(title, note):
     curr_dir = os.getcwd()
     folder_path = os.path.join(curr_dir,'notes')
     if not os.path.exists(folder_path):
-        print(f"Not such folder. Making new folder...")
+        print(f"No such folder. Making new folder...")
         os.makedirs(folder_path)
 
     # Construct the full path where the note will be saved
