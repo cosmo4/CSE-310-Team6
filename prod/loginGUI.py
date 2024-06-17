@@ -3,6 +3,7 @@ from tkinter import messagebox
 from upload import upload
 from aiFileTest import summarize
 from drawwindow import DrawWindow
+from Date_Reminder import DateReminderApp
 
 
 class LoginWindow:
@@ -117,6 +118,10 @@ class MainWindow:
         # Text entry box on the right side
         self.text_entry = tk.Text(self.frame, wrap=tk.WORD)
         self.text_entry.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10, pady=10)
+
+    # Function to get the testing days and set the reminder
+    def date_reminder(self):
+        reminder = DateReminderApp(self.root)
 
     # Function to launch the drawing window
     def open_draw_window(self):
