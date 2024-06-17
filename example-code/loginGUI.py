@@ -112,7 +112,7 @@ class MainWindow:
         self.set_reminder_button.pack(pady=10)
 
         # Upload Notes button
-        self.upload_notes_button = tk.Button(self.button_frame, text="Upload Notes", width=20, height=2, command=upload)
+        self.upload_notes_button = tk.Button(self.button_frame, text="Upload Notes", width=20, height=2, command=self.open_file)
         self.upload_notes_button.pack(pady=10)
 
         # Text entry box on the right side
@@ -126,6 +126,18 @@ class MainWindow:
     # Function to launch the drawing window
     def open_draw_window(self):
         draw_window = DrawWindow(self.root)
+
+    def open_file(self):
+        file_name, text = upload()
+
+        # file_name = os.path.basename(file_name)
+        # self.title_entry.delete(0, tk.END)
+        # self.title_entry.insert(0, file_name)
+
+        self.text_entry.delete(1.0, tk.END)
+        self.text_entry.insert(tk.END, text)
+
+        # display save button and saving function
 
 class NoteManagerApp:
     """
