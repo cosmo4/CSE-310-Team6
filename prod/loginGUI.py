@@ -108,7 +108,7 @@ class MainWindow:
         self.draw_button.pack(pady=10)
 
         # Set Reminder button
-        self.set_reminder_button = tk.Button(self.button_frame, text="Set Reminder", width=20, height=2)
+        self.set_reminder_button = tk.Button(self.button_frame, text="Set Reminder", command=self.date_reminder, width=20, height=2)
         self.set_reminder_button.pack(pady=10)
 
         # Upload Notes button
@@ -125,7 +125,7 @@ class MainWindow:
 
     # Function to launch the drawing window
     def open_draw_window(self):
-            draw_window = DrawWindow(self.root)
+        draw_window = DrawWindow(self.root)
 
 class NoteManagerApp:
     """
