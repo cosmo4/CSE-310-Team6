@@ -110,9 +110,10 @@ def save_local(title, note):
         messagebox.showerror("Error", f"Failed to save the note: {e}")
 
 class ViewNoteWindow:
-    def __init__(self, root, note):
+    def __init__(self, root, note, main_window):
         self.root = root
         self.note = note
+        self.main_window = main_window
 
         self.view_window = tk.Toplevel(self.root)
         self.view_window.title("View Note")
@@ -148,3 +149,17 @@ class ViewNoteWindow:
         self.note_text.config(yscrollcommand=self.scrollbar.set)
         self.scrollbar.pack(side="right", fill="y")
         self.note_text.pack(side="left", fill="both", expand=True)
+
+        # Delete button
+        self.delete_button = tk.Button(self.view_window, text="Delete", command=self.delete_note)
+        self.delete_button.pack(pady=10)
+
+    def delete_note(self):
+        try:
+            # Delete note from Firebase Realtime Database
+            db.child("notes").child(self.main_window.user['localId']).child(self.note['id']).remove(self.main_window.user['idToken'])
+            messagebox.showinfo("Success", "Note deleted successfully!")
+            self.main_window.load_notes()  # Refresh notes list in main window
+            self.view_window.destroy()  # Close the view window after deletion
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to delete note: {e}")

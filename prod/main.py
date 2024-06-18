@@ -20,6 +20,7 @@ firebaseConfig = {
 
 firebase = pyrebase.initialize_app(firebaseConfig)
 db = firebase.database()
+
 class MainWindow:
     """
     Class to handle the main window functionality.
@@ -76,7 +77,7 @@ class MainWindow:
             self.open_new_note_window(text)
             
     def open_draw_window(self):
-        draw_window = DrawWindow(self.root, self.user)
+        draw_window = DrawWindow(self.root, self.user, self)
             
     def open_new_note_window(self, text=""):
         new_note = NewNoteWindow(self.root, self.user, self, text)
@@ -87,6 +88,7 @@ class MainWindow:
             notes = db.child("notes").child(self.user['localId']).get(self.user['idToken']).val()
             if notes:
                 for note_id, note in notes.items():
+                    note['id'] = note_id  # Assign the Firebase note ID to 'id' field
                     note_display_text = f"{note['title']} ({note['date']})"
                     self.notes_listbox.insert(tk.END, note_display_text)
             else:
@@ -102,7 +104,8 @@ class MainWindow:
             notes = db.child("notes").child(self.user['localId']).get(self.user['idToken']).val()
             for note_id, note in notes.items():
                 if note['title'] == selected_note_title:
-                    ViewNoteWindow(self.root, note)
+                    note['id'] = note_id  # Ensure 'id' is assigned here
+                    ViewNoteWindow(self.root, note, self)  # Pass self as main_window
                     break
 
 class NoteManagerApp:
@@ -131,4 +134,3 @@ if __name__ == "__main__":
     # Initialize and run the application
     app = NoteManagerApp(root)
     root.mainloop()
-
