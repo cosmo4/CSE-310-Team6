@@ -78,7 +78,7 @@ class MainWindow:
 
     # Function to launch the drawing window when the button is pressed       
     def open_draw_window(self):
-        draw_window = DrawWindow(self.root, self.user, self)
+        draw_window = DrawWindow(self.root)
 
     # Function to launch the new note window when the button is pressed        
     def open_new_note_window(self, text=""):
