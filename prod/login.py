@@ -13,16 +13,17 @@ firebaseConfig = {
         'measurementId': "G-JB077QZ9QM"
     }
 
+# Initialize pyrebase and assign variables
 firebase = pyrebase.initialize_app(firebaseConfig)
 auth = firebase.auth()
+
 class LoginWindow:
     """
     Class to handle the login window functionality.
     """
     def __init__(self, root, app):
-        """
-        Initialize the login window.
-        """
+        
+        # Initialize the login window.
         self.root = root
         self.app = app
         self.root.title("Note Manager")
@@ -64,29 +65,35 @@ class LoginWindow:
             self.button_frame, text="Sign In", command=self.sign_in)
         self.sign_in_button.grid(row=0, column=1, padx=5)
 
+    # Function to create an account if the button is pressed
     def create_account(self):
-        """
-        Handle user account creation.
-        """
+
+        # Assign variables for email and password
         email = self.email_entry.get()
         password = self.password_entry.get()
 
+        # If email and password are valid, create user
         try:
             user = auth.create_user_with_email_and_password(email, password)
             messagebox.showinfo("Account Created", "Account created successfully. Confirm signup in your email inbox.")
+        # If email and password are not valid, display error window
         except:
             messagebox.showwarning("Input Error", "Please enter both valid email and password.")
 
+    # Function to sign in the user if the button is pressed
     def sign_in(self):
-        """
-        Handle user sign-in.
-        """
+
+        # Assign variables for email and password    
         email = self.email_entry.get()
         password = self.password_entry.get()
 
+        # If email and password are valid, sign in user
         try:
             login = auth.sign_in_with_email_and_password(email, password)
+            # Open main menu with login info
             self.app.open_main_window(login)
+            # Retrieve and store user token
             token = auth.get_account_info(login['idToken'])
+        # If email and password are not valid, display error window
         except:
             messagebox.showwarning("Input Error", "Login failed. Please enter both a valid email and password.")
