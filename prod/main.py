@@ -5,6 +5,7 @@ from summarizeNote import summarize
 from drawwindow import DrawWindow
 from login import LoginWindow
 from newnote import NewNoteWindow, ViewNoteWindow
+from Date_Reminder import DateReminderApp
 import pyrebase
 
 firebaseConfig = {
@@ -54,7 +55,7 @@ class MainWindow:
         self.draw_button.pack(pady=10)
 
         # Set Reminder button
-        self.set_reminder_button = tk.Button(self.button_frame, text="Set Reminder", width=20, height=2)
+        self.set_reminder_button = tk.Button(self.button_frame, text="Set Reminder", command=self.open_date_reminder, width=20, height=2)
         self.set_reminder_button.pack(pady=10)
 
         # Upload Notes button
@@ -78,6 +79,9 @@ class MainWindow:
     def open_draw_window(self):
         draw_window = DrawWindow(self.root, self.user)
             
+    def open_date_reminder(self):
+        reminder = DateReminderApp(self)
+
     def open_new_note_window(self, text=""):
         new_note = NewNoteWindow(self.root, self.user, self, text)
 
