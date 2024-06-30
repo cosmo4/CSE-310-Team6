@@ -1,5 +1,8 @@
 # pip install Ghostscript
 # https://ghostscript.com/releases/gsdnld.html
+# reload vs code, test with 'gs --verion' if error, 'gswin64 --version'
+# run main.py, try to save drawing as img. if error, add 'gswin64' to PATH in System Environment Variables
+# windows>System>About>Advanced system settings>Environment Variables>Select 'Path' in System Variables section>Edit>New>'C:\Program Files\gs\gs10.03.1\bin\gswin64'>Ok
 
 import tkinter as tk
 from tkinter import filedialog
