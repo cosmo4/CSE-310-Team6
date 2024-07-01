@@ -15,7 +15,10 @@ class DrawWindow:
         self.top = tk.Toplevel(root)
         self.top.title("Drawing Canvas")
 
-        self.canvas = tk.Canvas(self.top, bg="white", width=1200, height=800)
+        screen_width = self.top.winfo_screenwidth() - 200
+        screen_height = self.top.winfo_screenheight() - 300
+
+        self.canvas = tk.Canvas(self.top, bg="white", width=screen_width, height=screen_height)
         self.canvas.pack()
 
         self.draw_mode = True
