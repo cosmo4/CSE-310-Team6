@@ -53,5 +53,6 @@ class DateReminderApp(tk.Toplevel):
        #     messagebox.showerror("Error", str(e))
 
 if __name__ == "__main__":
-    app = DateReminderApp()
+    root = tk.Tk()
+    app = DateReminderApp(root)
     app.mainloop()

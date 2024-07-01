@@ -14,6 +14,7 @@ from tkinter import Listbox, Toplevel
 import pyrebase
 from threading import Thread
 
+# Firebase info - Could we put this in one place and pass it into various files?
 firebaseConfig = {
                 'apiKey': "AIzaSyC-NJByPVn8XpksSCkSctCja08tr5creYU",
                 'authDomain': "notes-manager-81e62.firebaseapp.com",
@@ -27,6 +28,78 @@ firebaseConfig = {
 
 firebase = pyrebase.initialize_app(firebaseConfig)
 db = firebase.database()
+
+def file_location(user):
+   def select_location(args):
+      if args == 0:
+         dialog.file = select_firebase(user)
+      else:
+         dialog.file = select_file()
+      dialog.destroy()
+
+   dialog = Toplevel()
+   dialog.title("Select file location")
+   l = Label(dialog, text="Where is your note stored?")
+   l.pack(side="top")
+   
+   firebase_button = tk.Button(dialog, text="Cloud", command=lambda: select_location(0))
+   firebase_button.pack(pady=10, padx=5, side="left")
+
+   local_button = tk.Button(dialog, text="Local", command=lambda: select_location(1))
+   local_button.pack(pady=10, padx=5, side="right")
+
+   dialog.wait_window()
+   return dialog.file
+
+def select_firebase(user):
+    # Function to handle selection from Firebase files
+    def on_select():
+        selection = listbox.curselection()
+        if selection:
+            selected_file_name = listbox.get(selection[0])
+            download_file(selected_file_name)
+            dialog.destroy()  # Close the dialog
+
+    # Function to download file from Firebase
+    def download_file(file_name):
+        storage = firebase.storage()
+        local_path = os.path.join(os.getcwd(), 'cloud_notes', file_name)
+        if not os.path.exists('cloud_notes'):
+            os.makedirs('cloud_notes')
+        storage.child("notes/" + file_name).download(local_path)
+        print("Downloaded:", local_path)
+        dialog.user_selected_file = local_path
+
+    # Get all file names from Firebase Storage
+    def fetch_files(user):
+      notes = db.child("notes").child(user['localId']).get(user['idToken']).val()
+      assert (notes)
+      return [note for note in notes.items()]
+
+    # Create a new window for file selection
+    dialog = Toplevel()
+    dialog.title("Select a file from Firebase")
+    dialog.grab_set()
+    listbox = Listbox(dialog, width=50, height=10)
+    listbox.pack(padx=20, pady=20)
+
+    # Fetch and list files from Firebase
+    try:
+        files = fetch_files(user)
+        for file in files:
+            listbox.insert(tk.END, file)
+    except Exception as e:
+        messagebox.showerror("Error", f"Failed to list files from Firebase: {e}")
+        return
+
+    # Button to confirm selection
+    select_button = tk.Button(dialog, text="Select", command=on_select)
+    select_button.pack(pady=10)
+
+    dialog.user_selected_video_file = None
+    dialog.wait_window()
+
+    return dialog.user_selected_file
 
 def select_file():
    # Function to handle selection
@@ -69,11 +142,11 @@ def select_file():
 
    return dialog.user_selected_file
 
-def summarize():
+def summarize(user):
    # Initialize an OpenAI client
    client = OpenAI()
    # Set a file path
-   file_name = select_file()
+   file_name = file_location(user)
 
    # Create a new assistant named "Note Summarizer" using the gpt-3.5-turbo model with the given instructions
    assistant = client.beta.assistants.create(

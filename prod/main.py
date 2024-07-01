@@ -19,16 +19,17 @@ firebaseConfig = {
                 'measurementId': "G-JB077QZ9QM"
 }
 
+# Initialize pyrebase and assign variables
 firebase = pyrebase.initialize_app(firebaseConfig)
 db = firebase.database()
+
 class MainWindow:
     """
     Class to handle the main window functionality.
     """
     def __init__(self, root, user):
-        """
-        Initialize the main window.
-        """
+
+        # Initialize the main window.
         self.user = user
         self.root = root
         self.root.title("Note Manager")
@@ -47,7 +48,7 @@ class MainWindow:
         self.new_note_button.pack(pady=10)
 
         # Summarize button
-        self.summarize_button = tk.Button(self.button_frame, text="Summarize", width=20, height=2, command=summarize)
+        self.summarize_button = tk.Button(self.button_frame, text="Summarize", width=20, height=2, command=lambda: summarize(user))
         self.summarize_button.pack(pady=10)
 
         # Draw button
@@ -70,27 +71,30 @@ class MainWindow:
         # Load notes from the database
         self.load_notes()
 
-    # Function to launch the drawing window
+    # Function to convert uploaded document into text when the button is pressed
     def open_upload_file(self):
         text = upload()
         if text is not None:
             self.open_new_note_window(text)
-            
+
+    # Function to launch the drawing window when the button is pressed       
     def open_draw_window(self):
         draw_window = DrawWindow(self.root, self.user)
             
     def open_date_reminder(self):
-        reminder = DateReminderApp(self)
+        reminder = DateReminderApp(self.root)
 
     def open_new_note_window(self, text=""):
         new_note = NewNoteWindow(self.root, self.user, self, text)
 
+    # Function to retrieve user notes from the db and display in listbox
     def load_notes(self):
         self.notes_listbox.delete(0, tk.END)  # Clear the listbox
         try:
             notes = db.child("notes").child(self.user['localId']).get(self.user['idToken']).val()
             if notes:
                 for note_id, note in notes.items():
+                    note['id'] = note_id  # Assign the Firebase note ID to 'id' field
                     note_display_text = f"{note['title']} ({note['date']})"
                     self.notes_listbox.insert(tk.END, note_display_text)
             else:
@@ -98,15 +102,17 @@ class MainWindow:
         except Exception as e:
             messagebox.showwarning("Error", f"Failed to load notes: {e}")
 
+    # Function to open user note when double clicked in the listbox
     def open_note(self, event):
-        selected_index = self.notes_listbox.curselection()
+        selected_index = self.notes_listbox.curselection() 
         if selected_index:
-            selected_note_display_text = self.notes_listbox.get(selected_index)
+            selected_note_display_text = self.notes_listbox.get(selected_index) # Retrieve text from db
             selected_note_title = selected_note_display_text.split(" (")[0]  # Extract the title part
             notes = db.child("notes").child(self.user['localId']).get(self.user['idToken']).val()
-            for note_id, note in notes.items():
+            for note_id, note in notes.items(): 
                 if note['title'] == selected_note_title:
-                    ViewNoteWindow(self.root, note)
+                    note['id'] = note_id  # Ensure 'id' is assigned here
+                    ViewNoteWindow(self.root, note, self)  # Pass self as main_window
                     break
 
 class NoteManagerApp:
@@ -114,18 +120,17 @@ class NoteManagerApp:
     Main application class to manage the flow between login and main windows.
     """
     def __init__(self, root):
-        """
-        Initialize the application with the login window.
-        """
+            
+        # Initialize the application with the login window.
         self.root = root
         self.login_window = LoginWindow(self.root, self)
         self.user = None
 
     def open_main_window(self, user):
-        """
-        Transition from login window to main window.
-        """
+        
+        # Transition from login window to main window.
         self.user = user
+        # Close login window if authentication is successful 
         self.login_window.frame.destroy()
         self.main_window = MainWindow(self.root, self.user)
 
@@ -135,4 +140,3 @@ if __name__ == "__main__":
     # Initialize and run the application
     app = NoteManagerApp(root)
     root.mainloop()
-
