@@ -140,31 +140,38 @@ This section should be filled out during Week 13.
 
 ### Section 3.1 - Software
 
-1. Put your GitHub link for your team project here: 
+1. Put your GitHub link for your team project here: https://github.com/cosmo4/CSE-310-Team6
 
 2. Complete the following checklist by either indicating "Yes" or "No".  If you indicate "No" then provide an explanation of why beneath the table.
 
 |Question                                                    |Response|
 |------------------------------------------------------------|--------|
-|Is the link above public and working?                       |        |
-|Did you add comments to your code?                          |        |
-|Did you fully complete the readme.md file?                  |        |
-|Did you put the readme.md file in GitHub in the top folder? |        |
+|Is the link above public and working?                       |  Yes   |
+|Did you add comments to your code?                          |  Yes   |
+|Did you fully complete the readme.md file?                  |  Yes   |
+|Did you put the readme.md file in GitHub in the top folder? |  Yes   |
 
 3. Referring back to the list of planned requirements in Part 2 above, make a list of all the features and their status (Completed, In Progress, Not Started).  Include in your list features that you added or attempted that were not originally planned.
 
 |Feature #|Status     |Description                                               |
 |---------|-----------|----------------------------------------------------------|
-|         |           |                                                          |
-|         |           |                                                          |
-|         |           |                                                          |
-|         |           |                                                          |
+|    1    | Completed | User can write and save notes.                           |
+|    2    | Completed | Working GUI.                                             |
+|    3    | Completed | AI summarizes notes that are taken.                      |
+|    4    | Completed | Firebase/firestore database captures notes.              |
+|    5    | Completed | Users can create an account and login.                   |
+|    6    | Completed | A reminder is sent to the user for them to review notes. |
+|    7    | Completed | Translate writing to ASCII.                              |
+|    8    | Completed | Program can listen to lectures and translate to notes.   |
+
 
 _Note: Add more rows as needed._
 
 ### Section 3.2 - Retrospection
 
 1. Did all team members create a fork of the public GitHub repository to include in their own personal software portfolio?
+
+Yes
 
 2. Spend at least 10 minutes as a team have a retrospection meeting (also called a lessons learned).  Identify 3 things that went well and 3 things that did not go well.  Scope your observations to the team and not about specific individuals.  For the things that did not go well, identify how you can improve in future team projects.
 
