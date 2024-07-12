@@ -79,7 +79,7 @@ class MainWindow:
 
     # Function to launch the drawing window when the button is pressed       
     def open_draw_window(self):
-        draw_window = DrawWindow(self.root, self.user)
+        draw_window = DrawWindow(self.root)
             
     def open_date_reminder(self):
         reminder = DateReminderApp(self.root)
