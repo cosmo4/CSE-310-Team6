@@ -124,6 +124,8 @@ To recreate the development environment, you need the following software and/or 
 
 * VScode
 
+* firebase
+
 * Python
     * tkinter
     * pyrebase
@@ -131,15 +133,21 @@ To recreate the development environment, you need the following software and/or 
     * openai
     * google
 
-* firebase
-
 ## Useful Websites to Learn More
 
 I found these websites useful in developing this software:
 
-* [Website Title](Link)
-*
-*
+* [Firebase](https://firebase.google.com/docs/database?hl=en&authuser=0&_gl=1*h9kdsk*_ga*MzI0OTY1NTg5LjE3MTQ3NTI5ODc._ga_CW55HF8NVT*MTcxOTg1MjMwMC4yMi4xLjE3MTk4NTI1OTkuMjIuMC4w)
+* [Github](https://github.com/thisbejim/Pyrebase)
+* [Python](https://docs.python.org/3/library/tkinter.html)
+* [Python](https://docs.python.org/3/library/tk.html)
+* [Firebase](https://firebase.google.com/docs/firestore)
+* [Google Cloud](https://cloud.google.com/vision/docs)
+* [Youtube](https://www.youtube.com/watch?v=GtPUOFra8nE)
+* [Youtube](https://www.youtube.com/watch?v=9sfGCYKVDro&t=354s)
+* [Stackover](https://stackoverflow.com/questions/17915440/python-tkinter-save-canvas-as-image-using-pil)
+* [Geeks for geeks](https://www.geeksforgeeks.org/file-explorer-in-python-using-tkinter/)
+
 
 ## Future Work
 
