@@ -49,7 +49,7 @@ class MainWindow:
         self.new_note_button.pack(pady=10)
 
         # Summarize button
-        self.summarize_button = tk.Button(self.button_frame, text="Summarize", width=20, height=2, command=lambda: summarize(user))
+        self.summarize_button = tk.Button(self.button_frame, text="Summarize", width=20, height=2, command=lambda: summarize(user, self))
         self.summarize_button.pack(pady=10)
 
         # Draw button
