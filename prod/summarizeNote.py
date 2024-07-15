@@ -13,6 +13,8 @@ import os
 from tkinter import Listbox, Toplevel
 import pyrebase
 from threading import Thread
+import ntpath
+from datetime import datetime
 
 # Firebase info - Could we put this in one place and pass it into various files?
 firebaseConfig = {
@@ -52,54 +54,60 @@ def file_location(user):
    return dialog.file
 
 def select_firebase(user):
-    # Function to handle selection from Firebase files
-    def on_select():
-        selection = listbox.curselection()
-        if selection:
-            selected_file_name = listbox.get(selection[0])
-            download_file(selected_file_name)
-            dialog.destroy()  # Close the dialog
+   def open_note():
+      selected_index = listbox.curselection()
+      if selected_index:
+         selected_note_text = listbox.get(selected_index)
+         selected_note_title = selected_note_text.split(" (")[0]
+         notes = db.child("notes").child(user['localId']).get(user['idToken']).val()
+         for note_id, note in notes.items():
+            if note['title'] == selected_note_title:
+               note['id'] = note_id
+               new_file(note)
+               dialog.destroy()
 
-    # Function to download file from Firebase
-    def download_file(file_name):
-        storage = firebase.storage()
-        local_path = os.path.join(os.getcwd(), 'cloud_notes', file_name)
-        if not os.path.exists('cloud_notes'):
-            os.makedirs('cloud_notes')
-        storage.child("notes/" + file_name).download(local_path)
-        print("Downloaded:", local_path)
-        dialog.user_selected_file = local_path
+   def new_file(file_info):
+      notes_path = os.path.join(os.getcwd(), 'note_to_summarize')
+      if not os.path.exists(notes_path):
+         os.makedirs(notes_path)
+      file_location = os.path.join(notes_path, f"{file_info['title'].replace(' ','_')}.txt" )
+      file = open(file_location, "w")
+      file.write(file_info['note'])
+      file.close()
+      dialog.user_selected_file = file_location
 
-    # Get all file names from Firebase Storage
-    def fetch_files(user):
+   # Get all file names from Firebase Storage
+   def fetch_files(user):
       notes = db.child("notes").child(user['localId']).get(user['idToken']).val()
-      assert (notes)
+      if notes:
+         for note_id, note in notes.items():
+            note['id'] = note_id
       return [note for note in notes.items()]
 
-    # Create a new window for file selection
-    dialog = Toplevel()
-    dialog.title("Select a file from Firebase")
-    dialog.grab_set()
-    listbox = Listbox(dialog, width=50, height=10)
-    listbox.pack(padx=20, pady=20)
+   # Create a new window for file selection
+   dialog = Toplevel()
+   dialog.title("Select a file from Firebase")
+   dialog.grab_set()
+   listbox = Listbox(dialog, width=50, height=10)
+   listbox.pack(padx=20, pady=20)
 
-    # Fetch and list files from Firebase
-    try:
-        files = fetch_files(user)
-        for file in files:
-            listbox.insert(tk.END, file)
-    except Exception as e:
-        messagebox.showerror("Error", f"Failed to list files from Firebase: {e}")
-        return
+   # Fetch and list files from Firebase
+   try:
+      files = fetch_files(user)
+      for file in files:
+         listbox.insert(tk.END, file[1]['title'])
+   except Exception as e:
+      messagebox.showerror("Error", f"Failed to list files from Firebase: {e}")
+      return
 
-    # Button to confirm selection
-    select_button = tk.Button(dialog, text="Select", command=on_select)
-    select_button.pack(pady=10)
+   # Button to confirm selection
+   select_button = tk.Button(dialog, text="Select", command=open_note)
+   select_button.pack(pady=10)
 
-    dialog.user_selected_video_file = None
-    dialog.wait_window()
+   dialog.user_selected_video_file = None
+   dialog.wait_window()
 
-    return dialog.user_selected_file
+   return dialog.user_selected_file
 
 def select_file():
    # Function to handle selection
@@ -142,7 +150,7 @@ def select_file():
 
    return dialog.user_selected_file
 
-def summarize(user):
+def summarize(user, self):
    # Initialize an OpenAI client
    client = OpenAI()
    # Set a file path
@@ -196,18 +204,19 @@ def summarize(user):
    message_content = messages[0].content[0].text
    # Extract any annotations and citations from the content
    annotations = message_content.annotations
-   citations = []
    for index, annotation in enumerate(annotations):
       # Replace the original text with annotatted references
       message_content.value = message_content.value.replace(annotation.text, f"[{index}]")
       # Retrieve file citations if any
       if file_citation := getattr(annotation, "file_citation", None):
          cited_file = client.files.retrieve(file_citation.file_id)
-         citations.append(f"[{index}] {cited_file.filename}")
 
-   messagebox.showinfo(file_name + " Summarized", message_content.value)
+   os.remove(file_name)
+
+   messagebox.showinfo(ntpath.basename(file_name) + " Summarized", message_content.value)
    thread = Thread(target = clear_storage, args=(10,))
    thread.start()
+   save_summary(file_name, message_content.value, self)
 
 def clear_storage(args):
    client = OpenAI()
@@ -231,3 +240,44 @@ def clear_storage(args):
 
    except OpenAIError as e:
       print(f"An error occurred while deleting: {e}")
+
+# The function to allow saving a summary
+def save_summary(file_path, summarized_note, self):
+   def save_locally(final_path):
+      file = open(final_path, "w")
+      file.write(summarized_note)
+      messagebox.showinfo("File saved.")
+
+   def save_to_cloud(file_name):
+      data = {"title": file_name, "date": datetime.now().strftime("%m/%d/%Y %H:%M:%S"), "note": summarized_note}
+      try:
+         # Check to make sure it's not creating duplicates
+         notes = db.child("notes").child(self.user['localId']).get(self.user['idToken']).val()
+         for note_id, note in notes.items():
+            if note['title'] == file_name:
+               db.child("notes").child(self.user['localId']).child(note_id).remove(self.user['idToken'])
+         # Push the summary to the cloud
+         db.child("notes").child(self.user['localId']).push(data, self.user['idToken'])
+         messagebox.showinfo("Success", "Note saved successfully!") # Display success message
+      except Exception as e:
+         messagebox.showwarning("Error", f"Failed to save note: {e}")
+   
+   # Ask user if they want to save the summary
+   if messagebox.askyesno("Save Summary", "Do you want to save the summary?"):
+      summary_window = Toplevel()
+      summary_window.title("Save Summary")
+      Label(summary_window, text="Choose where to save the summary:").pack(pady=10)
+
+      local_save_button = tk.Button(summary_window, text="Save Locally", command=lambda: save_locally(final_path))
+      local_save_button.pack(pady=10, padx=5, side="left")
+
+      cloud_save_button = tk.Button(summary_window, text="Save to Cloud", command=lambda: save_to_cloud(file_name))
+      cloud_save_button.pack(pady=10, padx=5, side="right")
+
+      summarized_folder_path = os.path.join(os.getcwd(), 'notes')
+      file_name = ntpath.basename(file_path[:-4]) + "_summary.txt"
+      final_path = os.path.join(summarized_folder_path, file_name)
+
+      summary_window.wait_window()
+
+      summary_window.mainloop()
