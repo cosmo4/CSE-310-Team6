@@ -7,6 +7,7 @@ from login import LoginWindow
 from newnote import NewNoteWindow, ViewNoteWindow
 from Date_Reminder import DateReminderApp
 import pyrebase
+from Date_Reminder import DateReminderApp
 
 firebaseConfig = {
                 'apiKey': "AIzaSyC-NJByPVn8XpksSCkSctCja08tr5creYU",
@@ -84,6 +85,13 @@ class MainWindow:
     def open_date_reminder(self):
         reminder = DateReminderApp(self.root)
 
+<<<<<<< Updated upstream
+=======
+    def open_date_reminder(self):
+        date_reminder = DateReminderApp(self.root)
+
+    # Function to launch the new note window when the button is pressed        
+>>>>>>> Stashed changes
     def open_new_note_window(self, text=""):
         new_note = NewNoteWindow(self.root, self.user, self, text)
 
