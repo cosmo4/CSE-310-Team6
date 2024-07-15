@@ -175,3 +175,24 @@ Yes
 
 2. Spend at least 10 minutes as a team have a retrospection meeting (also called a lessons learned).  Identify 3 things that went well and 3 things that did not go well.  Scope your observations to the team and not about specific individuals.  For the things that did not go well, identify how you can improve in future team projects.
 
+Things that went well:
+
+Enjoyed working together and growing as a team
+The collaborative environment fostered team growth and enhanced overall project dynamics.
+
+Great planning on features and distributing work
+Effective planning and task distribution ensured that the project progressed smoothly and on schedule.
+
+Successfully integrated all our ideas into the final product
+The team's ability to integrate diverse ideas led to a cohesive and functional final product.
+
+Things that did not go well and how to improve:
+
+Commenting and organization throughout the duration of the project could be improved
+Improvement: Implement a standardized commenting system and maintain consistent organization practices to reduce clutter and improve readability for future projects.
+
+More comprehensive understanding of all the libraries and technologies used
+Improvement: Allocate time for team members to gain a deeper understanding of the libraries and technologies before starting the project. Consider organizing knowledge-sharing sessions or workshops.
+
+Visual changes just to make things more consistent and look nicer
+Improvement: Establish a clear design and style guide early in the project. Regularly review and update the design to ensure consistency and visual appeal throughout the development process.
