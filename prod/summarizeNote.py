@@ -153,7 +153,7 @@ def select_file():
 def summarize(user, self):
    # Initialize an OpenAI client
    client = OpenAI()
-   # Open AI API key - Be sure to place your key here!
+   # Open AI API key - Place the key here or it won't work!
    client.api_key = 
    # Set a file path
    file_name = file_location(user)
@@ -162,7 +162,7 @@ def summarize(user, self):
    assistant = client.beta.assistants.create(
    name="Note Summarizer",
    model="gpt-3.5-turbo",
-   instructions="You are a note summarizer. You read a text document and summarize the key points of college student's notes.",
+   instructions="You are a note summarizer. You read a text document and summarize the key points of a user's notes on any topic.",
    # Make sure the file_search tool is used in order to upload and read files
    tools=[{"type":"file_search"}],
    )
@@ -213,12 +213,12 @@ def summarize(user, self):
       if file_citation := getattr(annotation, "file_citation", None):
          cited_file = client.files.retrieve(file_citation.file_id)
 
-   os.remove(file_name)
-
    messagebox.showinfo(ntpath.basename(file_name) + " Summarized", message_content.value)
    thread = Thread(target = clear_storage, args=(10,))
    thread.start()
-   save_summary(file_name, message_content.value, self)
+   
+   if save_summary(file_name, message_content.value, self):
+      os.remove(file_name)
 
 3# Remove the file and vector store from API storage
 def clear_storage(args):
@@ -251,6 +251,7 @@ def save_summary(file_path, summarized_note, self):
       file = open(final_path, "w")
       file.write(summarized_note)
       messagebox.showinfo("File saved.")
+      return False
 
    #Saving to the cloud
    def save_to_cloud(file_name):
@@ -264,8 +265,10 @@ def save_summary(file_path, summarized_note, self):
          # Push the summary to the cloud
          db.child("notes").child(self.user['localId']).push(data, self.user['idToken'])
          messagebox.showinfo("Success", "Note saved successfully!") # Display success message
+         return True
       except Exception as e:
          messagebox.showwarning("Error", f"Failed to save note: {e}")
+         return True
    
    # Ask user if they want to save the summary
    if messagebox.askyesno("Save Summary", "Do you want to save the summary?"):
@@ -281,6 +284,9 @@ def save_summary(file_path, summarized_note, self):
       cloud_save_button.pack(pady=10, padx=5, side="right")
 
       summarized_folder_path = os.path.join(os.getcwd(), 'notes')
+      if not os.path.exists(summarized_folder_path):
+        print(f"Not such folder. Making new folder...")
+        os.makedirs(summarized_folder_path)
       file_name = ntpath.basename(file_path[:-4]) + "_summary.txt"
       final_path = os.path.join(summarized_folder_path, file_name)
 
