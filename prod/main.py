@@ -85,9 +85,6 @@ class MainWindow:
     def open_date_reminder(self):
         reminder = DateReminderApp(self.root)
 
-    def open_date_reminder(self):
-        date_reminder = DateReminderApp(self.root)
-
     # Function to launch the new note window when the button is pressed        
     def open_new_note_window(self, text=""):
         new_note = NewNoteWindow(self.root, self.user, self, text)
