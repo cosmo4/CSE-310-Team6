@@ -16,9 +16,6 @@ from threading import Thread
 import ntpath
 from datetime import datetime
 
-# Open AI API key - Should hide this is pushed live
-openai.api_key = 'sk-proj-DXFl0hwxwg6OixoTDdgCT3BlbkFJsG2T0xNhatnLdGfITLWB'
-
 # Firebase info - Could we put this in one place and pass it into various files?
 firebaseConfig = {
                 'apiKey': "AIzaSyC-NJByPVn8XpksSCkSctCja08tr5creYU",
@@ -156,6 +153,8 @@ def select_file():
 def summarize(user, self):
    # Initialize an OpenAI client
    client = OpenAI()
+   # Open AI API key - Should hide this is pushed live
+   client.api_key = 'sk-proj-H1gRZpqPmXLgfY1T5PPGT3BlbkFJw1QFp8QZw3AdRmhB8DfO'
    # Set a file path
    file_name = file_location(user)
 
