@@ -153,8 +153,8 @@ def select_file():
 def summarize(user, self):
    # Initialize an OpenAI client
    client = OpenAI()
-   # Open AI API key - Should hide this is pushed live
-   client.api_key = 'sk-proj-H1gRZpqPmXLgfY1T5PPGT3BlbkFJw1QFp8QZw3AdRmhB8DfO'
+   # Open AI API key - Be sure to place your key here!
+   client.api_key = 
    # Set a file path
    file_name = file_location(user)
 
