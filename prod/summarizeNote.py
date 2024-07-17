@@ -1,9 +1,9 @@
 # This program will upload a chosen file to chatGPT and get a response, then parse and display the response to the user.
 ### THIS WILL NOT WORK WITHOUT AN OPENAI API KEY ###
 ### TO APPLY A KEY TYPE "setx OPENAI_API_KEY 'your_api_key'" REPLACING 'your_api_key' WITH YOUR KEY ###
-### BE SURE TO ALSO CHANGE file_name TO AN EXISTING FILE ###
 
 # Import OpenAI library
+import openai
 from openai import OpenAI
 from openai import OpenAIError
 import tkinter as tk
@@ -15,6 +15,9 @@ import pyrebase
 from threading import Thread
 import ntpath
 from datetime import datetime
+
+# Open AI API key - Should hide this is pushed live
+openai.api_key = 'sk-proj-DXFl0hwxwg6OixoTDdgCT3BlbkFJsG2T0xNhatnLdGfITLWB'
 
 # Firebase info - Could we put this in one place and pass it into various files?
 firebaseConfig = {
@@ -218,9 +221,9 @@ def summarize(user, self):
    thread.start()
    save_summary(file_name, message_content.value, self)
 
+3# Remove the file and vector store from API storage
 def clear_storage(args):
    client = OpenAI()
-   # Remove the file and vector store from API storage
    try:
       file_list = client.files.list()
       for file in file_list:
@@ -243,11 +246,14 @@ def clear_storage(args):
 
 # The function to allow saving a summary
 def save_summary(file_path, summarized_note, self):
+
+   # Saving locally
    def save_locally(final_path):
       file = open(final_path, "w")
       file.write(summarized_note)
       messagebox.showinfo("File saved.")
 
+   #Saving to the cloud
    def save_to_cloud(file_name):
       data = {"title": file_name, "date": datetime.now().strftime("%m/%d/%Y %H:%M:%S"), "note": summarized_note}
       try:
@@ -268,6 +274,7 @@ def save_summary(file_path, summarized_note, self):
       summary_window.title("Save Summary")
       Label(summary_window, text="Choose where to save the summary:").pack(pady=10)
 
+      # Make buttons to save locally or on the cloud
       local_save_button = tk.Button(summary_window, text="Save Locally", command=lambda: save_locally(final_path))
       local_save_button.pack(pady=10, padx=5, side="left")
 
